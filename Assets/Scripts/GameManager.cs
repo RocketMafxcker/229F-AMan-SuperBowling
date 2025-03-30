@@ -1,12 +1,16 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     [SerializeField]GameObject ball;
+    [SerializeField] TMP_Text[] scoreText;
     int score = 0;
     GameObject[] pins;
-    int turnCounter = 1;
+    int turnCounter = 0;
+    int sumScore = 0;
+    
 
     Vector3[] positions;
     void Start()
@@ -22,13 +26,29 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if (turnCounter < 5)
+        if (turnCounter < 4)
         {
-            if (Input.GetMouseButtonDown(0) || ball.transform.position.z > 5)
+            if(ball.transform.position.y < -30)
             {
                 CountPinsDown();
-            }
-
+                ResetPins();
+                if (score == 10)
+                {
+                    sumScore = sumScore + score;
+                    scoreText[turnCounter].text = "X";
+                    score = 0;
+                }
+                else
+                {
+                    sumScore = sumScore + score;
+                    scoreText[turnCounter].text = score.ToString();
+                    score = 0;
+                }
+                turnCounter++;
+            } 
+        }else
+        {
+            scoreText[turnCounter].text = sumScore.ToString();
         }
     }
     void CountPinsDown()
@@ -41,13 +61,10 @@ public class GameManager : MonoBehaviour
                 pins[i].SetActive(false);
             }
         }
-        turnCounter++;
-        StartCoroutine(ResetPins());
     }
 
-    IEnumerator ResetPins()
+    void ResetPins()
     {
-        yield return new WaitForSeconds(3f);
         for (int i = 0; i < pins.Length; i++)
         {
             pins[i].SetActive(true);
