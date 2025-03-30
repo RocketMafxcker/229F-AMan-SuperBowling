@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,10 +9,11 @@ public class Ball : MonoBehaviour
     float maxPower = 500f;
     [SerializeField] Slider slider;
     float rollPower = 2f;
-    float weightFeeling = 25f;
+    float weightFeeling = 30f;
     [SerializeField] Button light;
     [SerializeField] Button medium;
     [SerializeField] Button heavy;
+    public static float startTime = 99999999999999999999999999999999999999f;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -30,6 +32,7 @@ public class Ball : MonoBehaviour
         {
             rb.AddForce(Vector3.forward * power);
             power = 0f;
+            startTime = Time.time;
             AudioSource source = GetComponent<AudioSource>();
             source.Play();
         }
@@ -42,13 +45,14 @@ public class Ball : MonoBehaviour
         {
             power--;
         }
-        light.onClick.AddListener(() => AddMass(0.5f, 35f));
-        medium.onClick.AddListener(() => AddMass(1f, 25f));
-        heavy.onClick.AddListener(() => AddMass(1.5f, 20f));
+        light.onClick.AddListener(() => AddMass(0.5f,40f));
+        medium.onClick.AddListener(() => AddMass(1f, 30f));
+        heavy.onClick.AddListener(() => AddMass(1.5f, 25f));
         slider.value = power;
     }
     void AddMass(float mass, float feeling)
     {
         rb.mass = mass;
+        weightFeeling = feeling;
     }
 }

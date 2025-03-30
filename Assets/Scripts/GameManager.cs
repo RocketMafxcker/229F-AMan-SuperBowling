@@ -1,15 +1,16 @@
 using System.Collections;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     [SerializeField]GameObject ball;
     [SerializeField] TMP_Text[] scoreText;
-    int score = 0;
+    public static int score = 0;
     GameObject[] pins;
-    int turnCounter = 0;
-    int sumScore = 0;
+    public static int turnCounter = 0;
+    public static int sumScore = 0;
     
 
     Vector3[] positions;
@@ -28,10 +29,11 @@ public class GameManager : MonoBehaviour
     {
         if (turnCounter < 4)
         {
-            if(ball.transform.position.y < -30)
+            if(Time.time - Ball.startTime >= 10 || ball.transform.position.y < -30)
             {
                 CountPinsDown();
                 ResetPins();
+                Ball.startTime = 99999999999999999999999999999999999999f;
                 if (score == 10)
                 {
                     sumScore = sumScore + score;
