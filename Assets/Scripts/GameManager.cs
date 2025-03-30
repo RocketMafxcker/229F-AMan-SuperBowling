@@ -2,6 +2,7 @@ using System.Collections;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -51,7 +52,12 @@ public class GameManager : MonoBehaviour
         }else
         {
             scoreText[turnCounter].text = sumScore.ToString();
+            Invoke("ReturnToMainMenu", 5f);
         }
+    }
+    void ReturnToMainMenu()
+    {
+        SceneManager.LoadScene(0);
     }
     void CountPinsDown()
     {
